@@ -1,0 +1,40 @@
+{
+  "name": "apollo-backend",
+  "version": "1.0.0",
+  "description": "Apollo server with express and db",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node  src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abduljeleelng/apollo-server.git"
+  },
+  "keywords": [
+    "Apollo-server",
+    "Graphql",
+    "db"
+  ],
+  "author": "abduljeleelng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abduljeleelng/apollo-server/issues"
+  },
+  "homepage": "https://github.com/abduljeleelng/apollo-server#readme",
+  "devDependencies": {
+    "@babel/core": "^7.13.1",
+    "@babel/node": "^7.13.0",
+    "@babel/preset-env": "^7.13.5",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "apollo-server": "^2.21.0",
+    "apollo-server-express": "^2.21.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "uuid": "^8.3.2"
+  }
+}
