@@ -1,23 +1,24 @@
-import { v4 as uuidv4 } from 'uuid';
 
 export default {
     Query :{
-       users: ()=>{
-        return Object.values(users)
+       users: async (parent, args, {models })=>{
+           return await models.User.findAll();
        },
-        user: (parent, {id})=>{
-            return users[id]
+        user: (parent, {id}, {models})=>{
+            return await models.User.findById(id);
         },
-        me: (parent, args, {me}) => {
-            return me
+        me: (parent, args, {models, me}) => {
+            return await models.User.findById(me.id)
         },
     },
 
     User: {
-        messages: user =>{
-            return Object.values(messages).filter(
-                message=>message.userId === user.id,
-            );
+        messages: async (user, args, {models}) =>{
+            return await models.Message.findAll({
+                where : {
+                    userId: user.id,
+                }
+            })
         },
     },
     
