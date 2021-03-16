@@ -1,8 +1,13 @@
 
+import userResolver from './user';
+import messageRolver from './message';
+//import { defaultFieldResolver } from 'graphql';
 
 
+export default {userResolver, messageRolver}
 
 /*
+
 import { v4 as uuidv4 } from 'uuid';
 
 export default {
