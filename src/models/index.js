@@ -1,86 +1,46 @@
-
 import Sequelize from 'sequelize';
+import User from './user';
+import Message from './message';
 
 const sequelize = new Sequelize(
-    process.env.DATABASE,
-    process.env.DATABASE_USER,
-    process.env.DATABASE_PASSWORD,
-    {
-        dialect: 'postgres',
-    },
+  process.env.DATABASE,
+  process.env.DATABASE_USER,
+  process.env.DATABASE_PASSWORD,
+  {
+    host:'localhost',
+    dialect: 'postgres',
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
+  },
+  
 );
 
-const models = {
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  })
+
+  const models = {
     User: sequelize.import('./user'),
     Message: sequelize.import('./message'),
-};
+  };
 
-Object.keys(models).forEach(key=>{
-    if('associate' in models[key]){
-        models[key].associate(models)
-    }
+
+Object.keys(models).forEach(key => {
+  console.log({key})
+  if ('associate' in models[key]) {
+    models[key].associate(models);
+  }
 });
 
+export { sequelize , User, Message};
 
-
-
-export { sequelize }
-
-export default models
-
-
-
-
-
-/*
-const users = {
-    1:{
-        id:'1',
-        username : "Robin Wieruch",
-        messageIds: [1]
-    },
-    2:{
-        id:'2',
-        username : "Robin ",
-        messageIds: [2]
-    },
-    3:{
-        id:'3',
-        username : "Wieruch",
-        messageIds: [3]
-    },
-    4:{
-        id:'4',
-        username : "Muhammed",
-        messageIds: [4]
-    },
-}
-
-
-const messages = {
-    1:{
-        id:'1',
-        text: "hello word",
-        userId: '1'
-    },
-    2:{
-        id:'2',
-        text: "messaging demo",
-        userId: '2'
-    },
-    3:{
-        id:'3',
-        text: "hello word",
-        userId: '3'
-    },
-    4:{
-        id:'4',
-        text: "messaging demo",
-        userId: '4'
-    }
-}
-
-const me = users[1];
-
-export default {users, messages}
-*/
+export default models;

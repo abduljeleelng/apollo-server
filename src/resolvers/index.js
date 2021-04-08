@@ -1,10 +1,19 @@
+import userResolvers from '../resolvers/user';
+import messageResolvers from '../resolvers/message';
 
+export default [userResolvers, messageResolvers];
+
+
+
+/*
 import userResolver from './user';
 import messageRolver from './message';
-//import { defaultFieldResolver } from 'graphql';
-
+import { defaultFieldResolver } from 'graphql';
 
 export default {userResolver, messageRolver}
+
+
+
 
 /*
 

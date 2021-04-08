@@ -1,47 +1,73 @@
-import { v4 as uuidv4 } from 'uuid';
+import { ForbiddenError } from 'apollo-server';
+import { combineResolvers } from 'graphql-resolvers';
+import { isAuthenticated, isMessageOwner } from './authorization';
+
+import pubsub, { EVENTS } from '../subscription';
 
 export default {
     Query :{
-
-        messages: ()=>{
-            return Object.values(messages)
+        messages:   async (parent, arg, { models })=>{
+            return await models.Message.findAll();
         },
      
-        message: (parent, {id})=>{
-            return message[id]
+        message: async (parent, {id}, { models })=>{
+            return await models.Message.findByPk(id);
         },
     },
 
     Mutation: {
-        createMessage: (parent, {text}, {me})=>{
-            const id = uuidv4();
-            const message = {
-                id,
-                text,
-                userId: me.id
-            };
-            console.log({message})
-         
-            messages[id] = message;
-           // messages[id].push(message)
-            users[me.id].messageIds.push(id);
-            return message;
-        },
-        deleteMessage: (parent, {id})=>{
-            const {[id]: message, ...otherMessage } = messages;
-            if(!message){
-                return false;
+        createMessageX: async (parent, {text}, {me, models})=>{
+            try {
+                return await models.Message.create(
+                    {
+                        text,
+                        userId: me.id
+                    }
+                )
+            } catch (error) {
+                throw new Error(error) 
             }
-            messages = otherMessage;
-            return true
         },
+
+        createMessage: combineResolvers(
+            isAuthenticated,
+            async (parent, { text }, { me, models }) => {
+                if(!me){
+                    throw new ForbiddenError('Not authenticated as user.')
+                }
+                const message =await models.Message.create(
+                    {
+                        text,
+                        userId:me.id
+                    }
+                );
+                pubsub.publish(EVENTS.MESSAGE.CREATED, {
+                    messageCreated: { message },
+                });
+
+                return message
+            },
+        ),
+        
+        deleteMessage: combineResolvers(
+            isAuthenticated,
+            isMessageOwner,
+            async (parent, {id}, {models})=>{
+                return await models.Message.destroy({ where: {id}});
+            },
+        ),
+
     },
        
-
     Message: {
-        user: Message =>{
-            return users[Message.userId];
+        user: async (message, args, { models}) =>{
+            return await models.User.findByPk(message.userId);
         },
     },
-    
+
+    Subscription: {
+        messageCreated: {
+            subscribe: () => pubsub.asyncIterator(EVENTS.MESSAGE.CREATED),
+        },
+    },
 };
