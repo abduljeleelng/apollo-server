@@ -23,12 +23,13 @@
   },
   "homepage": "https://github.com/abduljeleelng/apollo-server#readme",
   "devDependencies": {
+   
+  },
+  "dependencies": {
     "@babel/core": "^7.13.1",
     "@babel/node": "^7.13.0",
     "@babel/preset-env": "^7.13.5",
-    "nodemon": "^2.0.7"
-  },
-  "dependencies": {
+    "nodemon": "^2.0.7",
     "apollo-server": "^2.21.0",
     "apollo-server-express": "^2.21.0",
     "bcrypt": "^5.0.1",
