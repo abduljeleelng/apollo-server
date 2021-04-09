@@ -73,15 +73,25 @@ server.installSubscriptionHandlers(httpServer);
 
 const eraseDatabaseOnSync = false;
 
-
+const port = process.env.PORT || 8000;
 sequelize.sync({ force: eraseDatabaseOnSync}).then(async ()=>{
     if(eraseDatabaseOnSync){
       //createUsersWithMessages();
       console.log("erase and insert new records")
     }
-    app.listen({ port :8000 }, ()=>{
+    /*
+    app.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+      console.log(`🚀 Server ready at ${url}`);
+    });
+    app.listen({ port :8000, address }, ({address, on})=>{
+
+    })
+    */
+    app.listen(port, ()=>{
+        console.log(`🚀 Server ready at port ${port}  `);
         console.log('Apollo Server on http://localhost:8000/graphql');
     });
+    
 });
 
 
