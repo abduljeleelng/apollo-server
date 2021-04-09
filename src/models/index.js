@@ -14,7 +14,7 @@ dialect: 'postgres',
     process.env.DATABASE_USER,
     process.env.DATABASE_PASSWORD,
     {
-      host:'localhost',
+      host:process.env.HOST,
       dialect: 'postgres',
       pool: {
           max: 5,
