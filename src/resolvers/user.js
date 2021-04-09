@@ -10,16 +10,17 @@ const createToken = async (user, secret, expiresIn) => {
     return await jwt.sign({ id, email, username, role }, process.env.JWT_SECRET, {expiresIn,});
 };
 
-console.log(process.env.JWT_SECRET);
+//console.log(process.env.JWT_SECRET);
 
 export default {
     Query :{
        users: async (parent, args, {models })=>{
-           /*
-            models.User.findAll().then(users => {
+           
+           /* models.User.findAll().then(users => {
                 console.log("All users:", JSON.stringify(users, null, 4));
             });
             */
+            
            const result =  await models.User.findAll();
            if(result){
                return result;

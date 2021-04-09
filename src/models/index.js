@@ -35,7 +35,7 @@ sequelize
 
 
 Object.keys(models).forEach(key => {
-  console.log({key})
+  //console.log({key})
   if ('associate' in models[key]) {
     models[key].associate(models);
   }
