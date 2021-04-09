@@ -4,7 +4,7 @@ import Message from './message';
 
 
 let sequelize;
-if (process.env.DATABASE_URL) {
+if (process.env.DATABASE_URL_TEST) {
 sequelize = new Sequelize(process.env.DATABASE_URL, {
 dialect: 'postgres',
 });
